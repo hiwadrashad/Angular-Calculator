@@ -1,0 +1,97 @@
+check version by using cmd
+type in node --version
+
+in visual studio code
+
+ng new <Name> | creates new angular app
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+to bypass policy
+
+do use routing
+
+use Scss
+
+open project folder in visual studio code
+
+ng build | builds the project
+
+==================================
+
+angular.json has all settings
+
+main sr/main.ts = startup
+
+src/assets = assets
+
+src/style.css = scss for the whole application
+
+filereplacement = replaces files on build
+
+serve = start on local machine
+
+build and serve are most important ones
+
+=========================================
+
+package.json
+
+devdependencies is removed when app is production ready
+
+do in the right folder
+npm i | this installs all packages when needed
+ng serve -o open port en executes application
+ng serve without o opens port, go manually to port in browser
+
+ctr + s updates webrowser to changed code
+
+ctr + c exits running of webbrowser
+
+ng generate component Movies = creates movies component in app
+
+======================================
+environment.ts = all app settings like api url or tokens
+
+environment.prod.ts should have same properties as environment.ts
+
+=====================
+assets has all images and assets no css/scss
+
+=============================
+
+index.html do not change anything this is the root
+except for title
+
+main.ts do not change anything
+
+polyfilll do not change anything
+
+==========================
+main.js
+
+=====================
+
+app-routing.module.ts = routing ts
+ app.component.html to app.component.ts = important do not remove
+ app.component.html = html
+
+app.components.specs = remove this
+
+=============================================
+app.module.ts
+
+@component({}) ==  attribute <-0 styleurls imports sty;e sheet
+
+ extendedc lass = implements
+
+oninit is not necessary
+
+component can be loaded in component
+<app-movies></app-movies>
+
+===============================================
+
+angular event = (click)= "ShowMovie()"
+angular variable = [value] = ""
+
+ts : = =

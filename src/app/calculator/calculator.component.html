@@ -1,0 +1,42 @@
+<body>  
+    <div class="background-image"></div>
+    <div class="container">  
+  <div class="calc-body">  
+    <div class="calc-screen">  
+      <div class="calc-operation"> {{ input }} </div>  
+      <div class="calc-typed"> {{ result }} <span class="blink-me"> = </span> </div>  
+    </div>  
+    <div class="calc-button-row">  
+      <button class="button c" type="button" (click)="Clear()"> C </button>  
+      <button class="button l malformed-button">  </button>  
+      <button class="button l malformed-button">  </button>  
+      <button class="button l "type="button" (click)="InputValue('/')"> / </button>  
+    </div>  
+    <div class="calc-button-row">  
+      <button class="button"type="button" (click)="InputValue('7')"> 7 </button>  
+      <button class="button"type="button" (click)="InputValue('8')"> 8 </button>  
+      <button class="button"type="button" (click)="InputValue('9')"> 9 </button>  
+      <button class="button l"type="button" (click)="InputValue('x')"> x </button>  
+    </div>  
+    <div class="calc-button-row">  
+      <button class="button"type="button" (click)="InputValue('4')"> 4 </button> 
+      <button class="button"type="button" (click)="InputValue('1')"> 5 </button>  
+      <button class="button"type="button" (click)="InputValue('6')"> 6 </button>  
+      <button class="button l" type="button" (click)="InputValue('-')"> - </button>  
+    </div>  
+    <div class="calc-button-row">  
+      <button class="button" type="button" (click)="InputValue('1')"> 1 </button>  
+      <button class="button"type="button" (click)="InputValue('2')"> 2 </button>  
+      <button class="button" type="button" (click)="InputValue('3')"> 3 </button>  
+      <button class="button l"type="button" (click)="InputValue('+')"> + </button>  
+    </div>  
+    <div class="calc-button-row">  
+      <button class="button"type="button" (click)="InputValue('.')"> . </button>  
+      <button class="button" type="button" (click)="InputValue('0')"> 0 </button>  
+      <button class="button malformed-button">   
+      </button>
+      <button class="button l"type="button" (click)="CalculateAnswer()"> = </button>   
+    </div>  
+    </div>  
+  </div>  
+</body>  
