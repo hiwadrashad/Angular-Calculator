@@ -6,16 +6,11 @@ enum operator{
   Plus,
 }
 
-enum position{
-  Left,
-  right
-}
-
 class SubCalc
 {
   constructor(){}
-  index = 0;
-  operator = operator.Plus;
+  Formula : string[] = [];
+  InnerDimensions = 0;
 }
 
 @Component({
@@ -82,6 +77,18 @@ export class CalculatorComponent {
     }
   }
 
+  AddSpecialCharacters(input : string)
+  {
+    if (input === "√")
+    {
+       this.input = "√(" + this.input + ")";
+    }
+    if (input === "log")
+    {
+       this.input = "log(" + this.input + ")";
+    }
+  }
+
   CheckForDuplicateDots(input : string) : boolean 
   {
     let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/g,' ').replace(/[+]/g,' ').split(' ');
@@ -102,6 +109,14 @@ export class CalculatorComponent {
     this.removeValueFromArray('',numberlist);
     return numberlist;
   }
+
+  SeperatestringThirdDimension (input : string) : string[]
+  {
+    let numberlist = input.replace(/[og]/g,'').replace(/[l]/g,' log ').replace(/[√]/g,' √ ').replace(/[(]/g,'').replace(/[/]/g,' / ').replace(/[*]/g,' * ').replace(/[-]/g,' - ').replace(/[+]/g,' + ')
+    .replace(/[)]/g,' ) ').split(' ');
+    this.removeValueFromArray('',numberlist);
+    return numberlist;
+  }
   
 public clone(): any {
     var cloneObj = new (this.constructor() as any);
@@ -114,7 +129,14 @@ public clone(): any {
     }
     return cloneObj;
 }
+
 CustomEvaluate(input : string) : string
+{
+ let SeperatedList = this.SeperatestringThirdDimension(input);
+ return "empty";
+}
+
+CalculateSubstringSecondDimension(input : string) : string
 {
   let SeperatedArray = this.Seperatestring(input) as string[];
   let index = 0;

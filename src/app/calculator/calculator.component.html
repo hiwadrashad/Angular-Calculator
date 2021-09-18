@@ -1,6 +1,22 @@
-<body>  
-    <div class="background-image"></div>
-    <div class="container">  
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body> 
+  <header>
+	<div class="overlay">
+<h1 class="Header-H1"><span class="Head">Angular</span>Calculator</h1>
+<h3>For simple calculations</h3>
+<p>Reliable Calculator for all your simple formulas.</p>
+	<br>
+		</div>
+</header> 
+
+  <div class="container">  
+    <div class="textbox">
+      <h1><span class="Head">Angular</span>Calculator</h1>
+      <strong class="Sub-Text">Simple calculator</strong>
+       <div>Simple Calculator to calculate all your forumla',<br> possibility to calculate algebraic functions and <br> basic analysis</div>
+    </div>
   <div class="calc-body">  
     <div class="calc-screen">  
       <div class="calc-operation"> {{ input }} </div>  
@@ -8,8 +24,8 @@
     </div>  
     <div class="calc-button-row">  
       <button class="button c" type="button" (click)="Clear()"> C </button>  
-      <button class="button l malformed-button">  </button>  
-      <button class="button l malformed-button">  </button>  
+      <button class="button l" type="button"(click)="AddSpecialCharacters('√')"> √ </button>  
+      <button class="button l" type="button"(click)="AddSpecialCharacters('log')"> log </button>  
       <button class="button l "type="button" (click)="InputValue('/')"> / </button>  
     </div>  
     <div class="calc-button-row">  
@@ -39,4 +55,17 @@
     </div>  
     </div>  
   </div>  
+  <div class="iso"></div>
+  <footer>
+    <ul>
+      <li>Homepage</li>
+      <li>Contact</li>
+      <li>More info</li>
+    </ul>
+    <div class="social-media">
+      <a href="#" class="fa fa-facebook fa-2x"></a>
+      <a href="#" class="fa fa-twitter fa-2x"></a>
+      <a href="#" class="fa fa-reddit fa-2x"></a>
+    </div>
+  </footer>
 </body>  
