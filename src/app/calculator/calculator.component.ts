@@ -1,16 +1,37 @@
 import { Component, OnInit } from '@angular/core';
+enum operator{
+  Divide,
+  Multiply,
+  Minus,
+  Plus,
+}
+
+enum position{
+  Left,
+  right
+}
+
+class SubCalc
+{
+  constructor(){}
+  index = 0;
+  operator = operator.Plus;
+}
 
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.scss']
 })
-export class CalculatorComponent implements OnInit {
+
+
+export class CalculatorComponent {
 
   constructor() { }
 
   input : string = "1234";
   result : string = "35";
+  UseEvaluateMethod : boolean = false;
 
   ngOnInit(): void {
   }
@@ -50,13 +71,20 @@ export class CalculatorComponent implements OnInit {
     }
     else
     {
-    this.result = eval(inputwithmultiplyswapped);
+      if (this.UseEvaluateMethod === true)
+      {
+       this.result = eval(inputwithmultiplyswapped);
+      }
+      else
+      {
+        this.result = this.CustomEvaluate(inputwithmultiplyswapped);
+      }
     }
   }
 
   CheckForDuplicateDots(input : string) : boolean 
   {
-    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/,' ').replace(/[+]/,' ').split(' ');
+    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/g,' ').replace(/[+]/g,' ').split(' ');
     this.removeValueFromArray('',numberlist);
     for (let item of numberlist)
     {
@@ -68,9 +96,311 @@ export class CalculatorComponent implements OnInit {
     return false;
   }
 
+  Seperatestring(input : string) : string[]
+  {
+    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' * ').replace(/[-]/g,' - ').replace(/[+]/g,' + ').split(' ');
+    this.removeValueFromArray('',numberlist);
+    return numberlist;
+  }
+  
+public clone(): any {
+    var cloneObj = new (this.constructor() as any);
+    for (var attribut in this) {
+        if (typeof this[attribut] === "object") {
+            cloneObj[attribut] = this[attribut];
+        } else {
+            cloneObj[attribut] = this[attribut];
+        }
+    }
+    return cloneObj;
+}
+CustomEvaluate(input : string) : string
+{
+  let SeperatedArray = this.Seperatestring(input) as string[];
+  let index = 0;
+  let ClonedArray = Object.assign([],SeperatedArray);
+  let MultiplyDivideOccurances = 0;
+  let MinusPlustOccurances = 0;
+  for (let ValuesAndOperators of SeperatedArray)
+  {
+    if (ValuesAndOperators === "*")
+    {
+      try 
+      {
+       let previousnumber = Number(ClonedArray[(index - 1) - (MultiplyDivideOccurances * 2)]);
+       let nextnumber = Number(SeperatedArray[index + 1]);
+       if (isNaN(previousnumber) || isNaN(nextnumber))
+       {
+         return "Invalid input"
+       }
+       else
+       {
+         let CalculatedValue = previousnumber * nextnumber;
+         ClonedArray.splice((index + 1) - ((MultiplyDivideOccurances * 2)),1);
+         ClonedArray.splice(index - ((MultiplyDivideOccurances * 2)),1);
+         ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),1);
+         ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),0,CalculatedValue.toString());
+         MultiplyDivideOccurances = MultiplyDivideOccurances + 1;
+       }
+      }
+      catch(Error)
+      {
+        return "Invalid input";
+      }
+    }
+    if (ValuesAndOperators === "/")
+    {
+      try 
+      {
+       let previousnumber = Number(ClonedArray[(index - 1) - (MultiplyDivideOccurances * 2)]);
+       let nextnumber = Number(SeperatedArray[index + 1]);
+       if (isNaN(previousnumber) || isNaN(nextnumber))
+       {
+         return "Invalid input"
+       }
+       else
+       {
+         let CalculatedValue = previousnumber / nextnumber;
+         ClonedArray.splice((index + 1) - ((MultiplyDivideOccurances * 2)),1);
+         ClonedArray.splice(index - ((MultiplyDivideOccurances * 2)),1);
+         ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),1);
+         ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),0,CalculatedValue.toString());
+         MultiplyDivideOccurances = MultiplyDivideOccurances + 1;
+       }
+      }
+      catch(Error)
+      {
+        return "Invalid input";
+      }
+    }
+    if (ValuesAndOperators === "+")
+    {
+      try 
+      {
+       let previousnumber = Number(ClonedArray[(index - 1) - (MultiplyDivideOccurances * 2)]);
+       let nextnumber = Number(SeperatedArray[index + 1]);
+       if (isNaN(previousnumber) || isNaN(nextnumber))
+       {
+         return "Invalid input"
+       }
+       else
+       {
+        if (!!ClonedArray[(index + MinusPlustOccurances + 1) - (MultiplyDivideOccurances) - (MinusPlustOccurances)])
+        {
+        if (ClonedArray[(index + MinusPlustOccurances + 1) - (MultiplyDivideOccurances) - MinusPlustOccurances] === "*" ||ClonedArray[(index + 2) - (MultiplyDivideOccurances) - MinusPlustOccurances] === "/")
+        {
+          MinusPlustOccurances = MinusPlustOccurances + 1
+        }
+        else
+        {
+          let CalculatedValue = previousnumber - nextnumber;
+          ClonedArray.splice((index + 1) - ((MultiplyDivideOccurances *2)),1);
+          ClonedArray.splice(index - ((MultiplyDivideOccurances * 2)),1);
+          ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),1);
+          ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),0,CalculatedValue.toString());
+          MultiplyDivideOccurances = MultiplyDivideOccurances + 1;
+          MinusPlustOccurances = MinusPlustOccurances + 1
+        }
+        }
+        else
+        {   
+          let CalculatedValue = previousnumber - nextnumber;
+          ClonedArray.splice((index + 1) - ((MultiplyDivideOccurances * 2)),1);
+          ClonedArray.splice(index - ((MultiplyDivideOccurances * 2) ),1);
+          ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),1);
+          ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),0,CalculatedValue.toString());  
+          MinusPlustOccurances = MinusPlustOccurances + 1
+        }
+       }
+      }
+      catch(Error)
+      {
+        return "Invalid input";
+      }
+    }
+    if (ValuesAndOperators === "-")
+    {
+      try 
+      {
+       let previousnumber = Number(ClonedArray[(index - 1) - (MultiplyDivideOccurances * 2)]);
+       let nextnumber = Number(SeperatedArray[index + 1]);
+       if (isNaN(previousnumber) || isNaN(nextnumber))
+       {
+         return "Invalid input"
+       }
+       else
+       {
+        if (!!ClonedArray[(index + MinusPlustOccurances + 1) - (MultiplyDivideOccurances) - (MinusPlustOccurances)])
+        {
+        if (ClonedArray[(index + MinusPlustOccurances + 1) - (MultiplyDivideOccurances) - MinusPlustOccurances] === "*" ||ClonedArray[(index + 2) - (MultiplyDivideOccurances) - MinusPlustOccurances] === "/")
+        {
+          MinusPlustOccurances = MinusPlustOccurances + 1
+        }
+        else
+        {
+          let CalculatedValue = previousnumber - nextnumber;
+          ClonedArray.splice((index + 1) - ((MultiplyDivideOccurances *2)),1);
+          ClonedArray.splice(index - ((MultiplyDivideOccurances * 2)),1);
+          ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),1);
+          ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),0,CalculatedValue.toString());
+          MultiplyDivideOccurances = MultiplyDivideOccurances + 1;
+          MinusPlustOccurances = MinusPlustOccurances + 1
+        }
+        }
+        else
+        {   
+          let CalculatedValue = previousnumber - nextnumber;
+          ClonedArray.splice((index + 1) - ((MultiplyDivideOccurances * 2)),1);
+          ClonedArray.splice(index - ((MultiplyDivideOccurances * 2) ),1);
+          ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),1);
+          ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),0,CalculatedValue.toString());  
+          MinusPlustOccurances = MinusPlustOccurances + 1
+        }
+       }
+      }
+      catch(Error)
+      {
+        return "Invalid input";
+      }
+    }
+    index = index + 1;
+  }
+  let cleanedupanswer = ClonedArray.join().replace(/[,]/g,'');
+  let CalculatedAnswer = this.CalculateSubString(cleanedupanswer);
+  return CalculatedAnswer;
+}
+
+  CalculateSubString(input : string) : string
+  {
+     var SeperatedArray = this.Seperatestring(input) as string[];
+     let ReturnAnswer = 0 ;
+     let index = 0;
+     for (let ValuesAndOperators of SeperatedArray)
+     {
+        if (ValuesAndOperators === "/")
+        {
+          try
+          {
+           let previousnumber = Number(SeperatedArray[index - 1]);
+           let nextnumber = Number(SeperatedArray[index + 1]);
+           if (isNaN(previousnumber) || isNaN(nextnumber))
+           {
+             return "Invalid input"
+           }
+           else
+           {
+             var subanswer = 0;
+             if (index === 1)
+            {
+             var subanswer = previousnumber / nextnumber;
+            }
+            else
+            {
+              var subanswer = ReturnAnswer / nextnumber;
+            }
+            ReturnAnswer = subanswer;
+           }
+          }
+          catch(Error)
+          {
+            return "Invalid input";
+          }
+        } 
+        if (ValuesAndOperators === "*")
+        {
+          try
+          {
+           let previousnumber = Number(SeperatedArray[index - 1]);
+           let nextnumber = Number(SeperatedArray[index + 1]);
+           if (isNaN(previousnumber) || isNaN(nextnumber))
+           {
+             return "Invalid input"
+           }
+           else
+           {
+             var subanswer = 0;
+             if (index === 1)
+            {
+             var subanswer = previousnumber * nextnumber;
+            }
+            else
+            {
+              var subanswer = ReturnAnswer * nextnumber;
+            }
+            ReturnAnswer = subanswer;
+           }
+          }
+          catch(Error)
+          {
+            return "Invalid input";
+          }
+        }
+         if (ValuesAndOperators === "-")
+        {
+          try
+          {
+           let previousnumber = Number(SeperatedArray[index - 1]);
+           let nextnumber = Number(SeperatedArray[index + 1]);
+           if (isNaN(previousnumber) || isNaN(nextnumber))
+           {
+             return "Invalid input"
+           }
+           else
+           {
+             var subanswer = 0;
+             if (index === 1)
+            {
+             var subanswer = previousnumber - nextnumber;
+            }
+            else
+            {
+              var subanswer = ReturnAnswer - nextnumber;
+            }
+            ReturnAnswer = subanswer;
+           }
+          }
+          catch(Error)
+          {
+            return "Invalid input";
+          }
+        }
+        if (ValuesAndOperators === "+")
+        {
+          try
+          {
+           let previousnumber = Number(SeperatedArray[index - 1]);
+           let nextnumber = Number(SeperatedArray[index + 1]);
+           if (isNaN(previousnumber) || isNaN(nextnumber))
+           {
+             return "Invalid input"
+           }
+           else
+           {
+             var subanswer = 0;
+             if (index === 1)
+            {
+             var subanswer = previousnumber + nextnumber;
+            }
+            else
+            {
+              var subanswer = ReturnAnswer + nextnumber;
+            }
+            ReturnAnswer = subanswer;
+           }
+          }
+          catch(Error)
+          {
+            return "Invalid input";
+          }
+        } 
+        index = index + 1;
+     }
+     return ReturnAnswer.toString();
+  }
+
   CheckForDivisionByZero(input : string) : boolean
   {
-    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/,' ').replace(/[+]/,' ').split(' ');
+    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/g,' ').replace(/[+]/g,' ').split(' ');
     this.removeValueFromArray('',numberlist);
     let index = 0;
     for (let item of numberlist)
@@ -101,7 +431,7 @@ export class CalculatorComponent implements OnInit {
 
   CheckForValueStartingWithZero(input : string) : boolean
   {
-    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/,' ').replace(/[+]/,' ').split(' ');
+    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/g,' ').replace(/[+]/g,' ').split(' ');
     this.removeValueFromArray('',numberlist);
     for (let item of numberlist)
     {
@@ -115,7 +445,7 @@ export class CalculatorComponent implements OnInit {
   }
   CheckForMultipleFollowingOperators(input : string) : boolean
   {
-    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/,' ').replace(/[+]/,' ').split(' ');
+    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/g,' ').replace(/[+]/g,' ').split(' ');
     this.removeValueFromArray('',numberlist);
     let index = 0;
     for (let item of numberlist)
