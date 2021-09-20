@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { disableDebugTools } from '@angular/platform-browser';
 enum operator{
   Divide,
   Multiply,
@@ -130,10 +131,94 @@ public clone(): any {
     return cloneObj;
 }
 
+
 CustomEvaluate(input : string) : string
 {
  let SeperatedList = this.SeperatestringThirdDimension(input);
- return "empty";
+ let ReturnList : any[] = [];
+ let index = 0;
+ let SkipFromIndex= 0;
+ let SkipTOIndex = 0;
+ let LogRootCount = 0;
+ let InnerParenthesisCount = 0;
+ let SurpressAdding = false;
+ for (let DisectedFormula of SeperatedList)
+ {
+  if (DisectedFormula === "log" || DisectedFormula == "√")
+     {
+       SkipFromIndex = index;
+       let closingparentheses = 0;
+       let InnerLogRoot = 0;
+       let OuterOperator = ""
+       if (DisectedFormula === "log")
+       {
+         OuterOperator = "log";
+       }
+       if(DisectedFormula === "√")
+       {
+         OuterOperator = "√";
+       }
+          for(let i = index; i < SeperatedList.length; i++)
+          {
+            let CompareValue = SeperatedList[i];
+            if (CompareValue === ')')
+            {
+              closingparentheses = closingparentheses + 1;
+               if (InnerLogRoot < closingparentheses)
+               {
+                 let LogUnitToString = "";
+                 SkipTOIndex = i;
+                 for (let x = SkipFromIndex; x <= SkipTOIndex; x++)
+                 {
+                   if (!(SeperatedList[x] === "log" || SeperatedList[x] === ")" || SeperatedList[x] === "√"))
+                   {
+                      LogUnitToString = LogUnitToString.concat(SeperatedList[x])
+                   }
+                 }
+                 let InnerAnswer = this.CalculateSubstringSecondDimension(LogUnitToString);
+                 let InnerNumber = Number(InnerAnswer);
+                 if (isNaN(InnerNumber))
+                 {
+                   return "Invalid input"
+                 }
+                 let LogAnswer : Number = 0;
+                 if (DisectedFormula === "log")
+                 {
+                    LogAnswer = Math.log10(InnerNumber);
+                 }
+                 else
+                 if (DisectedFormula === "√")
+                 {
+                  LogAnswer = Math.sqrt(InnerNumber);
+                 }
+
+                 ReturnList.push(LogAnswer);
+               }
+            }
+            index = index + 1;
+          }
+          LogRootCount = LogRootCount + 1;
+          SurpressAdding = true;
+     }
+     
+       else if (SurpressAdding === false)
+       {
+        ReturnList.push(DisectedFormula);
+       }
+       if (DisectedFormula === ")")
+       {
+         InnerParenthesisCount = InnerParenthesisCount + 1;
+         if(LogRootCount === InnerParenthesisCount)
+         {
+           SurpressAdding = false;
+         }
+       }
+     
+     index + index + 1;
+ }
+ let ConcatenadedString =  ReturnList.join().replace(/[,]/g,'');
+ let answer = this.CalculateSubstringSecondDimension(ConcatenadedString);
+ return answer;
 }
 
 CalculateSubstringSecondDimension(input : string) : string
@@ -215,7 +300,7 @@ CalculateSubstringSecondDimension(input : string) : string
         }
         else
         {
-          let CalculatedValue = previousnumber - nextnumber;
+          let CalculatedValue = previousnumber + nextnumber;
           ClonedArray.splice((index + 1) - ((MultiplyDivideOccurances *2)),1);
           ClonedArray.splice(index - ((MultiplyDivideOccurances * 2)),1);
           ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),1);
@@ -226,7 +311,7 @@ CalculateSubstringSecondDimension(input : string) : string
         }
         else
         {   
-          let CalculatedValue = previousnumber - nextnumber;
+          let CalculatedValue = previousnumber + nextnumber;
           ClonedArray.splice((index + 1) - ((MultiplyDivideOccurances * 2)),1);
           ClonedArray.splice(index - ((MultiplyDivideOccurances * 2) ),1);
           ClonedArray.splice((index - 1) - ((MultiplyDivideOccurances * 2)),1);
@@ -297,6 +382,18 @@ CalculateSubstringSecondDimension(input : string) : string
      var SeperatedArray = this.Seperatestring(input) as string[];
      let ReturnAnswer = 0 ;
      let index = 0;
+     if (SeperatedArray.length === 1)
+     {
+      let ConvertedNumber = Number(SeperatedArray[0]);
+      if (isNaN(ConvertedNumber))
+      {
+        return "Invalid input"
+      }
+      else
+      {
+       ReturnAnswer = ConvertedNumber;
+      }
+     }
      for (let ValuesAndOperators of SeperatedArray)
      {
         if (ValuesAndOperators === "/")
