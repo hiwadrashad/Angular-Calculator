@@ -292,11 +292,10 @@ CalculateSubstringSecondDimension(input : string) : string
        }
        else
        {
-        if (!!ClonedArray[(index + MinusPlustOccurances + 1) - (MultiplyDivideOccurances) - (MinusPlustOccurances)])
+        if (!!SeperatedArray[(index) + 2])
         {
-        if (ClonedArray[(index + MinusPlustOccurances + 1) - (MultiplyDivideOccurances) - MinusPlustOccurances] === "*" ||ClonedArray[(index + 2) - (MultiplyDivideOccurances) - MinusPlustOccurances] === "/")
+        if (SeperatedArray[(index) + 2] === "*" ||ClonedArray[(index) + 2] === "/")
         {
-          MinusPlustOccurances = MinusPlustOccurances + 1
         }
         else
         {
@@ -337,9 +336,9 @@ CalculateSubstringSecondDimension(input : string) : string
        }
        else
        {
-        if (!!ClonedArray[(index + MinusPlustOccurances + 1) - (MultiplyDivideOccurances) - (MinusPlustOccurances)])
+        if (!!SeperatedArray[index + 2])
         {
-        if (ClonedArray[(index + MinusPlustOccurances + 1) - (MultiplyDivideOccurances) - MinusPlustOccurances] === "*" ||ClonedArray[(index + 2) - (MultiplyDivideOccurances) - MinusPlustOccurances] === "/")
+        if (SeperatedArray[index + 2])
         {
           MinusPlustOccurances = MinusPlustOccurances + 1
         }
