@@ -23,11 +23,14 @@ class SubCalc
 
 export class CalculatorComponent {
 
-  constructor() { }
+  constructor() { 
+  }
 
   input : string = "1234";
   result : string = "35";
   UseEvaluateMethod : boolean = false;
+  history : string[] = []
+
 
   ngOnInit(): void {
   }
@@ -42,6 +45,7 @@ export class CalculatorComponent {
     this.input = "";
     this.result = "";
   }
+
 
   CalculateAnswer()
   {
@@ -74,7 +78,10 @@ export class CalculatorComponent {
       else
       {
         this.result = this.CustomEvaluate(inputwithmultiplyswapped);
+        let historyresult = this.input + " = " + this.result; 
+        this.history.push(historyresult);
       }
+      
     }
   }
 
@@ -130,7 +137,6 @@ public clone(): any {
     }
     return cloneObj;
 }
-
 
 CustomEvaluate(input : string) : string
 {
@@ -217,6 +223,21 @@ CustomEvaluate(input : string) : string
      index + index + 1;
  }
  let ConcatenadedString =  ReturnList.join().replace(/[,]/g,'');
+ if(ReturnList[0] === "-")
+ {
+  let InnerNumber = Number(ReturnList[1]);
+  if (isNaN(InnerNumber))
+  {
+    return "Invalid input"
+  }
+  else
+  {
+    let NegativeNumber = "-" + InnerNumber;
+    ReturnList.splice(0,1);
+    ReturnList.splice(0,1);
+    ReturnList.splice(0,0,NegativeNumber);
+  }
+ }
  let answer = this.CalculateSubstringSecondDimension(ConcatenadedString);
  return answer;
 }
@@ -563,7 +584,7 @@ CalculateSubstringSecondDimension(input : string) : string
   }
   CheckForMultipleFollowingOperators(input : string) : boolean
   {
-    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' ').replace(/[-]/g,' ').replace(/[+]/g,' ').split(' ');
+    let numberlist = input.replace(/[/]/g,' / ').replace(/[*]/g,' * ').replace(/[-]/g,' ').replace(/[+]/g,' + ').split(' ');
     this.removeValueFromArray('',numberlist);
     let index = 0;
     for (let item of numberlist)

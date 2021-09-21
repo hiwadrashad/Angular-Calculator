@@ -1,0 +1,83 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body> 
+    <header>
+      <div class="overlay">
+  <h1 class="Header-H1"><span class="Head">Angular</span>Calculator</h1>
+  <h3>For simple calculations</h3>
+  <p>Reliable Calculator for all your simple formulas.</p>
+      <br>
+          </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js" type="text/javascript"></script>
+  
+  </header> 
+    
+  <div class="chart-div">
+    <canvas #lineCanvas></canvas>
+    <hr color="red">
+</div>
+    <div class="container">  
+      <div class="textbox">
+        <h1><span class="Head">Angular</span>Calculator</h1>
+        <strong class="Sub-Text">Simple calculator</strong>
+         <div>Simple Calculator to calculate all your forumla',<br> possibility to calculate algebraic functions and <br> basic analysis</div>
+      </div>
+    <div class="calc-body">  
+      <div class="calc-screen">  
+        <div class="calc-operation"> {{ input }} </div>  
+        <div class="calc-typed"> {{ result }} <span class="blink-me"> = </span> </div>  
+      </div>  
+      <div class="calc-button-row">  
+        <button class="button c" type="button" (click)="Clear()"> C </button>  
+        <button class="button l" type="button"(click)="AddSpecialCharacters('x')"> (X) </button>  
+        <button class="button l" type="button"(click)="AddSpecialCharacters('log')"> log </button>  
+        <button class="button l "type="button" (click)="InputValue('/')"> / </button>  
+      </div>  
+      <div class="calc-button-row">  
+        <button class="button"type="button" (click)="InputValue('7')"> 7 </button>  
+        <button class="button"type="button" (click)="InputValue('8')"> 8 </button>  
+        <button class="button"type="button" (click)="InputValue('9')"> 9 </button>  
+        <button class="button l"type="button" (click)="InputValue('x')"> x </button>  
+      </div>  
+      <div class="calc-button-row">  
+        <button class="button"type="button" (click)="InputValue('4')"> 4 </button> 
+        <button class="button"type="button" (click)="InputValue('5')"> 5 </button>  
+        <button class="button"type="button" (click)="InputValue('6')"> 6 </button>  
+        <button class="button l" type="button" (click)="InputValue('-')"> - </button>  
+      </div>  
+      <div class="calc-button-row">  
+        <button class="button" type="button" (click)="InputValue('1')"> 1 </button>  
+        <button class="button"type="button" (click)="InputValue('2')"> 2 </button>  
+        <button class="button" type="button" (click)="InputValue('3')"> 3 </button>  
+        <button class="button l"type="button" (click)="InputValue('+')"> + </button>  
+      </div>  
+      <div class="calc-button-row">  
+        <button class="button"type="button" (click)="InputValue('.')"> . </button>  
+        <button class="button" type="button" (click)="InputValue('0')"> 0 </button>  
+        <button class="button" type="button" (click)="GoToEquations()"> Eq  
+        </button>
+        <button class="button l"type="button" (click)="CalculateAnswer()"> = </button>   
+      </div>  
+      </div>  
+    </div>  
+    <div class="iso"></div>
+    <footer>
+      <ul>
+        <li>Homepage</li>
+        <li>Contact</li>
+        <li>More info</li>
+      </ul>
+      <div class="social-media">
+        <a href="#" class="fa fa-facebook fa-2x"></a>
+        <a href="#" class="fa fa-twitter fa-2x"></a>
+        <a href="#" class="fa fa-reddit fa-2x"></a>
+      </div>
+    </footer>
+  </body>  
+  <script>
+    const CHART = document.getElementById("LineChart");
+    console.log(CHART);
+   </script>
+   <router-outlet>
+  
