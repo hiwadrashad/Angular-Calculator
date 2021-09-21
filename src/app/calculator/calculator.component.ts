@@ -173,15 +173,17 @@ CustomEvaluate(input : string) : string
                if (InnerLogRoot < closingparentheses)
                {
                  let LogUnitToString = "";
+                 let SeperatedReturnList : any[] = [];
                  SkipTOIndex = i;
                  for (let x = SkipFromIndex; x <= SkipTOIndex; x++)
                  {
                    if (!(SeperatedList[x] === "log" || SeperatedList[x] === ")" || SeperatedList[x] === "√"))
                    {
+                      SeperatedReturnList.push(SeperatedList[x]);
                       LogUnitToString = LogUnitToString.concat(SeperatedList[x])
                    }
                  }
-                 let InnerAnswer = this.CalculateSubstringSecondDimension(LogUnitToString);
+                 let InnerAnswer = this.CalculateSubstringSecondDimension(SeperatedReturnList);
                  let InnerNumber = Number(InnerAnswer);
                  if (isNaN(InnerNumber))
                  {
@@ -238,13 +240,12 @@ CustomEvaluate(input : string) : string
     ReturnList.splice(0,0,NegativeNumber);
   }
  }
- let answer = this.CalculateSubstringSecondDimension(ConcatenadedString);
+ let answer = this.CalculateSubstringSecondDimension(ReturnList);
  return answer;
 }
 
-CalculateSubstringSecondDimension(input : string) : string
+CalculateSubstringSecondDimension(SeperatedArray : any[]) : string
 {
-  let SeperatedArray = this.Seperatestring(input) as string[];
   let index = 0;
   let ClonedArray = Object.assign([],SeperatedArray);
   let MultiplyDivideOccurances = 0;
@@ -393,13 +394,12 @@ CalculateSubstringSecondDimension(input : string) : string
     index = index + 1;
   }
   let cleanedupanswer = ClonedArray.join().replace(/[,]/g,'');
-  let CalculatedAnswer = this.CalculateSubString(cleanedupanswer);
+  let CalculatedAnswer = this.CalculateSubString(ClonedArray);
   return CalculatedAnswer;
 }
 
-  CalculateSubString(input : string) : string
+  CalculateSubString(SeperatedArray : any[]) : string
   {
-     var SeperatedArray = this.Seperatestring(input) as string[];
      let ReturnAnswer = 0 ;
      let index = 0;
      if (SeperatedArray.length === 1)
